@@ -5,6 +5,7 @@ node 24
 
 ## Info
 
+crear carpeta `./data`
 en `const URL_BASE = ""` colocar la URL base
 
 ## Instalar 
