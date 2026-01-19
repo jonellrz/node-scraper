@@ -1,0 +1,24 @@
+{
+  "name": "scraping_js",
+  "version": "1.0.0",
+  "description": "prueba scraper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "playwright": "^1.57.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonellrz/node-scraper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonellrz/node-scraper/issues"
+  },
+  "homepage": "https://github.com/jonellrz/node-scraper#readme"
+}
