@@ -44,7 +44,7 @@ async function obtenerCarro() {
                 datoCarro['vistas'] = buscarPropiedad('advertisementViews', contenidoTotal);
                 datoCarro['modelo'] = buscarPropiedad('Modelo', contenidoTotal);
                 datoCarro['photo'] = buscarPropiedad('xlarge', contenidoTotal);
-                datoCarro['photo'] =  buscarPropiedad('xlarge', contenidoTotal, 2);
+                datoCarro['photo2'] =  buscarPropiedad('xlarge', contenidoTotal, 2);
                 datoCarro['price'] = buscarPropiedad('price', contenidoTotal, 3);
                 datoCarro['departamento'] = buscarPropiedad('departamento', contenidoTotal);
                 datoCarro['provincia'] = buscarPropiedad('provincia', contenidoTotal);
