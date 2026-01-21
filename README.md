@@ -5,8 +5,7 @@ node 24
 
 ## Info
 
-crear carpeta `./data`
-en `const URL_BASE = ""` colocar la URL base
+en `./src/config` colocar los datos
 
 ## Instalar 
 
@@ -24,4 +23,4 @@ en `const URL_BASE = ""` colocar la URL base
 
 ## Ejecutar 
 
-> node index.js
+> node ./src/index.js
