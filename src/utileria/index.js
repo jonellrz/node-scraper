@@ -1,6 +1,42 @@
 const fs = require('fs');
 const path = require('path');
 
+/**
+ * Extrae el array de resultados completo desde el objeto resultStore
+ * @param {string} textoCompleto - El contenido unido de los scripts __next_f
+ */
+const obtenerResultadosDeBusqueda = (textoCompleto) => {
+    // 1. Limpiar los escapes de comillas de Next.js
+    let textoLimpio = textoCompleto;
+    textoLimpio = textoLimpio.replace(/\\\"/g, '\\"');
+    textoLimpio = textoLimpio.replace(/\"/g, '"');
+
+    try {
+        // 2. Localizar el inicio de resultStore
+        const marcador = '"resultStore":';
+        const inicio = textoLimpio.indexOf(marcador);
+        if (inicio === -1) return [];
+
+        let llaves = 0;
+        let jsonTexto = "";
+        const desdeStore = textoLimpio.substring(inicio + marcador.length);
+
+        for (let i = 0; i < desdeStore.length; i++) {
+            if (desdeStore[i] === '{') llaves++;
+            if (desdeStore[i] === '}') llaves--;
+            jsonTexto += desdeStore[i];
+            if (llaves === 0 && jsonTexto.length > 1) break;
+        }
+
+        const store = JSON.parse(jsonTexto);
+        return store.results || [];
+
+    } catch (e) {
+        console.error("❌ Error al extraer resultStore:", e.message);
+        return [];
+    }
+};
+
 const buscarPropiedad = (prop, texto, coincidencia = 1) => {
 
     // "hola" : { "name" : "valor"  }      :: hola.name  -> valor
@@ -63,7 +99,10 @@ const guardarFichero = (ruta, data) => {
 };
 
 async function extraerLinks(page, selector) {
-    return await page.$$eval(selector, anchors => anchors.map(a => a.href));
+    return await page.$$eval(selector, anchors => {
+        console.log('anchors', anchors)
+        return anchors.map(a => a.href);
+    });
 }
 
 function construirUrl(urlBase, pageNum) {
@@ -75,5 +114,5 @@ function construirUrl(urlBase, pageNum) {
 module.exports = { 
     buscarPropiedad, leerFichero, 
     guardarFichero, extraerLinks, 
-    construirUrl 
+    construirUrl, obtenerResultadosDeBusqueda
 };

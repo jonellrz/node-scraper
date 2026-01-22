@@ -16,8 +16,8 @@ async function obtenerCarro() {
     let todos = [];
     let cont = 1
     for (const pagina of paginas) {
-        for (const enlace of Object.values(pagina.enlaces)) {
-
+        for (const carro of Object.values(pagina.enlaces)) {
+            const enlace = carro.enlace
             try {
                 
              // leer los scripts
