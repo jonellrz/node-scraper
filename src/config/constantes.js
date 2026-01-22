@@ -4,5 +4,7 @@ module.exports = {
     FICHERO_CARROS: '',
     TIEMPO_ESPERA: 0,
     REINTENTOS: 0,
-    SELECTOR_CARRO: ''
+    SELECTOR_CARRO: '',
+    EXTRAER: [
+    ]
 };
