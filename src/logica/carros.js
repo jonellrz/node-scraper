@@ -39,8 +39,10 @@ async function obtenerCarro() {
                 const contenidoTotal = fragmentos.map(f => f[1]).join('');
 
                 const datoCarro = {}
-
+                
                 datoCarro['titulo'] = buscarPropiedad('title', contenidoTotal, 2);
+                datoCarro['vendedor'] = buscarPropiedad('contact.name', contenidoTotal);
+                datoCarro['vendedorCel'] = buscarPropiedad('contact.phone', contenidoTotal);
                 datoCarro['vistas'] = buscarPropiedad('advertisementViews', contenidoTotal);
                 datoCarro['modelo'] = buscarPropiedad('Modelo', contenidoTotal);
                 datoCarro['photo'] = buscarPropiedad('xlarge', contenidoTotal);
@@ -55,7 +57,6 @@ async function obtenerCarro() {
                 datoCarro['transmision'] = buscarPropiedad('transmision', contenidoTotal);
                 datoCarro['description'] = buscarPropiedad('description', contenidoTotal);
 
-                
                 todos.push(datoCarro);
                 // Guardado preventivo en cada carro
                 guardarFichero(FICHERO_CARROS, todos);

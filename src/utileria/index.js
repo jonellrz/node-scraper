@@ -3,17 +3,35 @@ const path = require('path');
 
 const buscarPropiedad = (prop, texto, coincidencia = 1) => {
     const _txt = texto.replace(/\\"/g, '"');
-    const regexObjeto = new RegExp(`"(?:key|name)"\\s*:\\s*"${prop}"\\s*,\\s*"value"\\s*:\\s*(?:"([^"]*)"|(\\d+))`, 'gi');
-    const regexDirecto = new RegExp(`"${prop}"\\s*:\\s*(?:"([^"]*)"|(\\d+))`, 'gi');
+    let regex;
+    
+    // CASO A: Sub-objetos (ej: contact.name)
+    if (prop.includes('.')) {
+        const [padre, hijo] = prop.split('.');
+        regex = new RegExp(`"${padre}"\\s*:\\s*\\{[^}]*?"${hijo}"\\s*:\\s*(?:"([^"]*)"|(\\d+))`, 'gi');
+    } 
+    // CASO B: Ficha técnica o Propiedad directa
+    else {
+        const regexObjeto = new RegExp(`"(?:key|name)"\\s*:\\s*"${prop}"\\s*,\\s*"value"\\s*:\\s*(?:"([^"]*)"|(\\d+))`, 'gi');
+        let matches = [..._txt.matchAll(regexObjeto)];
+        
+        if (matches.length >= coincidencia) {
+            const m = matches[coincidencia - 1];
+            return m[1] || m[2]; // Retorna el texto o el número
+        }
 
-    let matches = [..._txt.matchAll(regexObjeto)];
-    if (matches.length < coincidencia) {
-        const matchesDirectos = [..._txt.matchAll(regexDirecto)];
-        if (matchesDirectos.length >= coincidencia) matches = matchesDirectos;
+        regex = new RegExp(`"${prop}"\\s*:\\s*(?:"([^"]*)"|(\\d+))`, 'gi');
     }
 
+    const matches = [..._txt.matchAll(regex)];
     const match = matches[coincidencia - 1];
-    return match ? (match[1] || match[2]) : null;
+
+    if (match) {
+        // match[1] es el valor si tenía comillas, match[2] si era número puro
+        return (match[1] || match[2] || '').trim();
+    }
+
+    return null;
 };
 
 const leerFichero = (ruta) => {
