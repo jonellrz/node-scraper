@@ -2,6 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 const buscarPropiedad = (prop, texto, coincidencia = 1) => {
+
+    // "hola" : { "name" : "valor"  }      :: hola.name  -> valor
+    // {"name": 'hola': "value" : "valor"} :: hola -> valor
+    // {"hola": "valor"}                   :: hola -> valor
+
     const _txt = texto.replace(/\\"/g, '"');
     let regex;
     
