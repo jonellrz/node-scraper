@@ -1,4 +1,4 @@
-const { FICHERO_ENLACES, FICHERO_CARROS } = require('../config/constantes');
+const { FICHERO_ENLACES, FICHERO_CARROS, EXTRAER } = require('../config/constantes');
 const Logger = require('../servicio/Logger');
 const { navegador } = require('../servicio/navegador');
 const { leerFichero, buscarPropiedad, guardarFichero } = require('../utileria');
@@ -39,24 +39,11 @@ async function obtenerCarro() {
                 const contenidoTotal = fragmentos.map(f => f[1]).join('');
 
                 const datoCarro = {}
-                
-                datoCarro['titulo'] = buscarPropiedad('title', contenidoTotal, 2);
-                datoCarro['vendedor'] = buscarPropiedad('contact.name', contenidoTotal);
-                datoCarro['vendedorCel'] = buscarPropiedad('contact.phone', contenidoTotal);
-                datoCarro['vistas'] = buscarPropiedad('advertisementViews', contenidoTotal);
-                datoCarro['modelo'] = buscarPropiedad('Modelo', contenidoTotal);
-                datoCarro['photo'] = buscarPropiedad('xlarge', contenidoTotal);
-                datoCarro['photo2'] =  buscarPropiedad('xlarge', contenidoTotal, 2);
-                datoCarro['price'] = buscarPropiedad('price', contenidoTotal, 3);
-                datoCarro['departamento'] = buscarPropiedad('departamento', contenidoTotal);
-                datoCarro['provincia'] = buscarPropiedad('provincia', contenidoTotal);
-                datoCarro['distrito'] = buscarPropiedad('distrito', contenidoTotal);
-                datoCarro['AñoModelo'] = buscarPropiedad('Año Modelo', contenidoTotal);
-                datoCarro['AñoFabricación'] = buscarPropiedad('Año de fabricación', contenidoTotal);
-                datoCarro['kilometraje'] = buscarPropiedad('kilometraje', contenidoTotal);
-                datoCarro['transmision'] = buscarPropiedad('transmision', contenidoTotal);
-                datoCarro['description'] = buscarPropiedad('description', contenidoTotal);
 
+                EXTRAER.forEach(d => {
+                    datoCarro[d.nombre] = buscarPropiedad(d.busca, contenidoTotal, d.coincidencia);
+                })
+                
                 todos.push(datoCarro);
                 // Guardado preventivo en cada carro
                 guardarFichero(FICHERO_CARROS, todos);
